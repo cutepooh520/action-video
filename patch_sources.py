@@ -100,7 +100,7 @@ def main():
     print("\n[1/8] Aligning component URLs...")
     config_path = os.path.join(src_dir, "app/src/main/java/com/fongmi/android/tv/bean/Config.java")
     target_config = 'return item == null ? create(0) : item;'
-    replacement_config = 'if (item != null && android.text.TextUtils.isEmpty(item.getUrl())) { delete(item.getUrl(), 0); item = null; }\n        return item == null ? create(0, "https://files.catbox.moe/ayq32a.json", "\\u6232\\u7cbe\\u5f71\\u8996") : item;'
+    replacement_config = 'if (item != null && android.text.TextUtils.isEmpty(item.getUrl())) { delete(item.getUrl(), 0); item = null; }\n        return item == null ? create(0, "https://files.catbox.moe/6vv3h0.json", "\\u6232\\u7cbe\\u5f71\\u8996") : item;'
     patch_file_strict(config_path, target_config, replacement_config)
 
     # ========================================
