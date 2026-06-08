@@ -1,6 +1,8 @@
 name: Build Player Runner
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -58,12 +60,12 @@ jobs:
         run: |
           cd engine_core/Release/apk/
            # Remove any existing release tag to avoid conflicts
-          gh release delete v0.9.4 --repo ${{ github.repository }} -y || true
-          git push --delete origin v0.9.4 || true
+          gh release delete v0.9.5 --repo ${{ github.repository }} -y || true
+          git push --delete origin v0.9.5 || true
           
-          gh release create v0.9.4 *.apk \
+          gh release create v0.9.5 *.apk \
             --repo ${{ github.repository }} \
-            --title "Runner Release v0.9.4" \
+            --title "Runner Release v0.9.5" \
             --notes "Automated release of personal test runner executables."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
