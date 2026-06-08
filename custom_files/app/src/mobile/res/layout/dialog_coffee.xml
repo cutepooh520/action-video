@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Intro Description -->
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="如果您覺得本程式好用，歡迎贊助 Yuri 喝杯咖啡，支持本專案的持續維護與更新！"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- ECPay Online Checkout Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ecpay"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="💳 綠界科技 線上支付 (刷卡/ATM/超商)"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:backgroundTint="#2563eb"
+            android:layout_marginBottom="24dp" />
+
+        <!-- LINE Pay Title -->
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🟢 LINE Pay 商家掃碼"
+            android:textColor="#22c55e"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- LINE Pay QR Code -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/qr_linepay"
+            android:scaleType="fitCenter"
+            android:background="@android:color/white"
+            android:padding="6dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Alipay Title -->
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔵 支付寶 (Alipay) 掃碼"
+            android:textColor="#3b82f6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Alipay QR Code -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/qr_alipay"
+            android:scaleType="fitCenter"
+            android:background="@android:color/white"
+            android:padding="6dp"
+            android:layout_marginBottom="16dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

@@ -139,6 +139,42 @@ def main():
     }"""
     patch_file_strict(setting_activity_path, target_activity, replacement_activity)
 
+    patch_file_strict(setting_activity_path,
+        'mBinding.version.setOnClickListener(this::onVersion);',
+        'mBinding.version.setOnClickListener(this::onVersion);\n        mBinding.coffee.setOnClickListener(this::onCoffee);')
+
+    patch_file_strict(setting_activity_path,
+        """    private void onVersion(View view) {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/FongMi/TV"));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }""",
+        """    private void onVersion(View view) {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/FongMi/TV"));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onCoffee(View view) {
+        try {
+            android.view.View dialogView = android.view.LayoutInflater.from(this).inflate(R.layout.dialog_coffee_tv, null);
+            androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    .setView(dialogView)
+                    .create();
+            dialogView.findViewById(R.id.btn_close).setOnClickListener(v -> dialog.dismiss());
+            dialog.show();
+            dialogView.findViewById(R.id.btn_close).requestFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }""")
+
     # Mobile
     setting_fragment_path = os.path.join(src_dir, "app/src/mobile/java/com/fongmi/android/tv/ui/fragment/SettingFragment.java")
     target_fragment = """        setOtherText();
@@ -160,6 +196,49 @@ def main():
         mBinding.wallRefresh.setVisibility(View.GONE);
     }"""
     patch_file_strict(setting_fragment_path, target_fragment, replacement_fragment)
+
+    patch_file_strict(setting_fragment_path,
+        'mBinding.version.setOnClickListener(this::onVersion);',
+        'mBinding.version.setOnClickListener(this::onVersion);\n        mBinding.coffee.setOnClickListener(this::onCoffee);')
+
+    patch_file_strict(setting_fragment_path,
+        """    private void onVersion(View view) {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/FongMi/TV"));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }""",
+        """    private void onVersion(View view) {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/FongMi/TV"));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onCoffee(View view) {
+        try {
+            View dialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.dialog_coffee, null);
+            dialogView.findViewById(R.id.btn_ecpay).setOnClickListener(v -> {
+                try {
+                    android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://pay.ecpay.com.tw/CreditPayment/ExpressCredit?MerchantID=3494530"));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            new MaterialAlertDialogBuilder(requireActivity())
+                    .setTitle("請 Yuri 喝杯咖啡")
+                    .setView(dialogView)
+                    .setPositiveButton("關閉", null)
+                    .show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }""")
 
     # Redirect version URL from official repository to custom repository
     patch_file(setting_activity_path, "https://github.com/FongMi/TV", "https://github.com/cutepooh520/action-video")
