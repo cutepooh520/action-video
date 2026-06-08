@@ -318,49 +318,72 @@ def main():
     # ========================================
     print("\n[4/8] Disabling external update checks...")
     
-    # Leanback Updater
-    updater_lb_path = os.path.join(src_dir, "app/src/leanback/java/com/fongmi/android/tv/Updater.java")
-    patch_file_strict(updater_lb_path,
-        """    public void start(Activity activity) {
+    main_updater_path = os.path.join(src_dir, "app/src/main/java/com/fongmi/android/tv/Updater.java")
+    if os.path.exists(main_updater_path):
+        # Patch for new version (5.5.2+) where Updater.java is unified in main
+        patch_file_strict(main_updater_path,
+            """    public void start(FragmentActivity activity) {
         if (!Setting.getUpdate()) return;
         Task.execute(() -> doInBackground(activity));
     }""",
-        """    public void start(Activity activity) {
+            """    public void start(FragmentActivity activity) {
         // Auto-updater disabled for custom build
         return;
     }""")
-    
-    # Also kill force() to prevent manual update check in settings
-    patch_file(updater_lb_path,
-        """    public Updater force() {
+        patch_file(main_updater_path,
+            """    public Updater force() {
         Notify.show(R.string.update_check);
         Setting.putUpdate(true);
         return this;
     }""",
-        """    public Updater force() {
+            """    public Updater force() {
         // Manual update check disabled
         return this;
     }""")
-    
-    # Mobile Updater
-    updater_mb_path = os.path.join(src_dir, "app/src/mobile/java/com/fongmi/android/tv/Updater.java")
-    patch_file_strict(updater_mb_path,
-        """    public void start(Activity activity) {
+        print("  [OK] Patched unified main/Updater.java")
+    else:
+        # Patch for older versions (5.4.1-) where Updater.java was split
+        updater_lb_path = os.path.join(src_dir, "app/src/leanback/java/com/fongmi/android/tv/Updater.java")
+        updater_mb_path = os.path.join(src_dir, "app/src/mobile/java/com/fongmi/android/tv/Updater.java")
+        
+        # Leanback
+        patch_file_strict(updater_lb_path,
+            """    public void start(Activity activity) {
         if (!Setting.getUpdate()) return;
         Task.execute(() -> doInBackground(activity));
     }""",
-        """    public void start(Activity activity) {
+            """    public void start(Activity activity) {
         // Auto-updater disabled for custom build
         return;
     }""")
-    
-    patch_file(updater_mb_path,
-        """    public Updater force() {
+        patch_file(updater_lb_path,
+            """    public Updater force() {
         Notify.show(R.string.update_check);
         Setting.putUpdate(true);
         return this;
     }""",
-        """    public Updater force() {
+            """    public Updater force() {
+        // Manual update check disabled
+        return this;
+    }""")
+        
+        # Mobile
+        patch_file_strict(updater_mb_path,
+            """    public void start(Activity activity) {
+        if (!Setting.getUpdate()) return;
+        Task.execute(() -> doInBackground(activity));
+    }""",
+            """    public void start(Activity activity) {
+        // Auto-updater disabled for custom build
+        return;
+    }""")
+        patch_file(updater_mb_path,
+            """    public Updater force() {
+        Notify.show(R.string.update_check);
+        Setting.putUpdate(true);
+        return this;
+    }""",
+            """    public Updater force() {
         // Manual update check disabled
         return this;
     }""")
